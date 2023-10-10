@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+import ContactCTA from "../components/ContactCTA.astro";
+import Hero from "../components/Hero.astro";
+import Grid from "../components/Grid.astro";
+import ArticlePreview from "../components/ArticlePreview.astro";
+
+const articles = (await getCollection("posts")).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="My Blog | Ivan Trajanovski"
+  description="I write about things I am learning and things I am building."
+>
+  <div class="stack gap-20">
+    <main class="wrapper stack gap-8">
+      <Hero
+        title="Articles"
+        tagline="I write about things I am learning and things I am building."
+        align="start"
+      />
+      <Grid variant="offset">
+        {
+          articles.map((article) => (
+            <li>
+              <ArticlePreview article={article} />
+            </li>
+          ))
+        }
+      </Grid>
+    </main>
+    <ContactCTA />
+  </div>
+</BaseLayout>
